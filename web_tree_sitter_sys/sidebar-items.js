@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Parser",""]]});
+initSidebarItems({"fn":[["predicates_for_pattern",""]],"struct":[["Edit",""],["Language",""],["LoggerParams",""],["Options",""],["Parser",""],["Point",""],["PredicateResult",""],["Query",""],["QueryCapture",""],["QueryMatch",""],["Range",""],["SyntaxNode",""],["Tree",""],["TreeCursor",""]],"type":[["Input",""],["InputClosureType",""],["Logger",""],["LoggerClosureType",""]]});

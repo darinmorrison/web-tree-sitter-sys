@@ -482,10 +482,90 @@
 <span id="479">479</span>
 <span id="480">480</span>
 <span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">parser</span> {
-    <span class="kw">use</span> <span class="ident">js_sys</span>::{<span class="ident">Function</span>, <span class="ident">JsString</span>, <span class="ident">Object</span>, <span class="ident">Promise</span>};
-    <span class="kw">use</span> <span class="ident">wasm_bindgen</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="ident">js_sys</span>::{<span class="ident">Array</span>, <span class="ident">Function</span>, <span class="ident">JsString</span>, <span class="ident">Object</span>, <span class="ident">Promise</span>, <span class="ident">Reflect</span>};
+    <span class="kw">use</span> <span class="ident">wasm_bindgen</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">JsCast</span>};
 
     <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">module</span> <span class="op">=</span> <span class="string">&quot;web-tree-sitter&quot;</span>)]</span>
     <span class="kw">extern</span> {
@@ -514,13 +594,53 @@
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_end_position</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Edit</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Point</span>;
     }
 
+    <span class="kw">impl</span> <span class="ident">Edit</span> {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
+            <span class="ident">start_index</span>: <span class="ident">u32</span>,
+            <span class="ident">old_end_index</span>: <span class="ident">u32</span>,
+            <span class="ident">new_end_index</span>: <span class="ident">u32</span>,
+            <span class="ident">start_position</span>: <span class="ident">Point</span>,
+            <span class="ident">old_end_position</span>: <span class="ident">Point</span>,
+            <span class="ident">new_end_position</span>: <span class="ident">Point</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">Object</span>::<span class="ident">new</span>();
+            <span class="ident">Reflect</span>::<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>, <span class="kw-2">&amp;</span><span class="string">&quot;start_index&quot;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">start_index</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">Reflect</span>::<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>, <span class="kw-2">&amp;</span><span class="string">&quot;old_end_index&quot;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">old_end_index</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">Reflect</span>::<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>, <span class="kw-2">&amp;</span><span class="string">&quot;new_end_index&quot;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">new_end_index</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">Reflect</span>::<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>, <span class="kw-2">&amp;</span><span class="string">&quot;start_position&quot;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">start_position</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">Reflect</span>::<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>, <span class="kw-2">&amp;</span><span class="string">&quot;old_end_position&quot;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">old_end_position</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">Reflect</span>::<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>, <span class="kw-2">&amp;</span><span class="string">&quot;new_end_position&quot;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">new_end_position</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">JsCast</span>::<span class="ident">unchecked_into</span>(<span class="ident">obj</span>)
+        }
+    }
+
     <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Input</span> <span class="op">=</span> <span class="ident">Function</span>;
+
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">InputClosureType</span> <span class="op">=</span> <span class="kw">dyn</span> <span class="ident">FnMut</span>(<span class="ident">u32</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Point</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">JsString</span><span class="op">&gt;</span>;
 
     <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Logger</span> <span class="op">=</span> <span class="ident">Function</span>;
 
-    <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">module</span> <span class="op">=</span> <span class="string">&quot;web-tree-sitter&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LoggerClosureType</span> <span class="op">=</span> <span class="kw">dyn</span> <span class="ident">FnMut</span>(<span class="ident">JsString</span>, <span class="ident">LoggerParams</span>, <span class="ident">JsString</span>);
+
+    <span class="attribute">#[<span class="ident">wasm_bindgen</span>]</span>
     <span class="kw">extern</span> {
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+        <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">extends</span> <span class="op">=</span> <span class="ident">Object</span>)]</span>
+        <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LoggerParams</span>;
+
+        <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">indexing_getter</span>)]</span>
+        <span class="kw">fn</span> <span class="ident">get</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">LoggerParams</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">JsString</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">JsString</span>;
+
+        <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">indexing_setter</span>)]</span>
+        <span class="kw">fn</span> <span class="ident">set</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">LoggerParams</span>, <span class="ident">val</span>: <span class="kw-2">&amp;</span><span class="ident">JsString</span>);
+
+        <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">indexing_deleter</span>)]</span>
+        <span class="kw">fn</span> <span class="ident">delete</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">LoggerParams</span>, <span class="ident">val</span>: <span class="kw-2">&amp;</span><span class="ident">JsString</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">module</span> <span class="op">=</span> <span class="string">&quot;web-tree-sitter&quot;</span>)]</span>
+    <span class="kw">extern</span> {
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
         <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Language</span>;
 
         <span class="comment">// Static Methods</span>
@@ -558,7 +678,15 @@
 
         <span class="comment">// -&gt; Range[]</span>
         <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">getter</span>, <span class="ident">js_name</span> <span class="op">=</span> <span class="ident">includedRanges</span>)]</span>
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">included_ranges</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Options</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">JsValue</span>]<span class="op">&gt;</span><span class="op">&gt;</span>;
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">included_ranges</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Options</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Array</span><span class="op">&gt;</span>;
+    }
+
+    <span class="kw">impl</span> <span class="ident">Options</span> {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">included_ranges</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Array</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">Object</span>::<span class="ident">new</span>();
+            <span class="ident">Reflect</span>::<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>, <span class="kw-2">&amp;</span><span class="string">&quot;included_ranges&quot;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">included_ranges</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">JsCast</span>::<span class="ident">unchecked_into</span>(<span class="ident">obj</span>)
+        }
     }
 
     <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">module</span> <span class="op">=</span> <span class="string">&quot;web-tree-sitter&quot;</span>)]</span>
@@ -574,6 +702,15 @@
 
         <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">getter</span>)]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">column</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Point</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span>;
+    }
+
+    <span class="kw">impl</span> <span class="ident">Point</span> {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">row</span>: <span class="ident">Point</span>, <span class="ident">column</span>: <span class="ident">Point</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">Object</span>::<span class="ident">new</span>();
+            <span class="ident">Reflect</span>::<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>, <span class="kw-2">&amp;</span><span class="string">&quot;row&quot;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">row</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">Reflect</span>::<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>, <span class="kw-2">&amp;</span><span class="string">&quot;column&quot;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">column</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">JsCast</span>::<span class="ident">unchecked_into</span>(<span class="ident">obj</span>)
+        }
     }
 
     <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">module</span> <span class="op">=</span> <span class="string">&quot;web-tree-sitter&quot;</span>)]</span>
@@ -607,6 +744,7 @@
         <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>)]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">delete</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Query</span>);
 
+        <span class="comment">// -&gt; QueryMatch[]</span>
         <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>)]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matches</span>(
             <span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Query</span>,
@@ -615,6 +753,7 @@
             <span class="ident">end_position</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">JsValue</span>]<span class="op">&gt;</span>;
 
+        <span class="comment">// -&gt; QueryCapture[]</span>
         <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>)]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">captures</span>(
             <span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Query</span>,
@@ -622,6 +761,10 @@
             <span class="ident">start_position</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Point</span><span class="op">&gt;</span>,
             <span class="ident">end_position</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Point</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">JsValue</span>]<span class="op">&gt;</span>;
+
+        <span class="comment">// -&gt; PredicateResult[]</span>
+        <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">js_name</span> <span class="op">=</span> <span class="ident">predicatesForPattern</span>)]</span>
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">predicates_for_pattern</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Query</span>, <span class="ident">pattern_index</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">JsValue</span>]<span class="op">&gt;</span>;
     }
 
     <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">module</span> <span class="op">=</span> <span class="string">&quot;web-tree-sitter&quot;</span>)]</span>
@@ -674,6 +817,17 @@
 
         <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">getter</span>, <span class="ident">js_name</span> <span class="op">=</span> <span class="ident">endIndex</span>)]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">end_index</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Range</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span>;
+    }
+
+    <span class="kw">impl</span> <span class="ident">Range</span> {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">start_position</span>: <span class="kw-2">&amp;</span><span class="ident">Point</span>, <span class="ident">end_position</span>: <span class="kw-2">&amp;</span><span class="ident">Point</span>, <span class="ident">start_index</span>: <span class="ident">u32</span>, <span class="ident">end_index</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">Object</span>::<span class="ident">new</span>();
+            <span class="ident">Reflect</span>::<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>, <span class="kw-2">&amp;</span><span class="string">&quot;start_position&quot;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">start_position</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">Reflect</span>::<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>, <span class="kw-2">&amp;</span><span class="string">&quot;end_position&quot;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">end_position</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">Reflect</span>::<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>, <span class="kw-2">&amp;</span><span class="string">&quot;start_index&quot;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">start_index</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">Reflect</span>::<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>, <span class="kw-2">&amp;</span><span class="string">&quot;end_index&quot;</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">end_index</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">JsCast</span>::<span class="ident">unchecked_into</span>(<span class="ident">obj</span>)
+        }
     }
 
     <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">module</span> <span class="op">=</span> <span class="string">&quot;web-tree-sitter&quot;</span>)]</span>
@@ -918,6 +1072,7 @@
 }
 
 <span class="kw">use</span> <span class="ident">js_sys</span>::{<span class="ident">JsString</span>, <span class="ident">Promise</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">parser</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">wasm_bindgen</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">module</span> <span class="op">=</span> <span class="string">&quot;web-tree-sitter&quot;</span>)]</span>
@@ -930,6 +1085,11 @@
     <span class="comment">// -&gt; Promise&lt;void&gt;</span>
     <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">static_method_of</span> <span class="op">=</span> <span class="ident">Parser</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Promise</span>;
+
+    <span class="comment">// Constructor</span>
+
+    <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">constructor</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Parser</span>;
 
     <span class="comment">// Instance Methods</span>
 
@@ -953,16 +1113,16 @@
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">parser</span>::<span class="ident">Tree</span>;
 
     <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">js_name</span> <span class="op">=</span> <span class="ident">getLanguage</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_language</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Parser</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">parser</span>::<span class="ident">Language</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_language</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Parser</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">parser</span>::<span class="ident">Language</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">js_name</span> <span class="op">=</span> <span class="ident">setLanguage</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_language</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Parser</span>, <span class="ident">language</span>: <span class="kw-2">&amp;</span><span class="ident">parser</span>::<span class="ident">Language</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_language</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Parser</span>, <span class="ident">language</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">parser</span>::<span class="ident">Language</span><span class="op">&gt;</span>);
 
     <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">js_name</span> <span class="op">=</span> <span class="ident">getLogger</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_logger</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Parser</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">parser</span>::<span class="ident">Logger</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_logger</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Parser</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">parser</span>::<span class="ident">Logger</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">js_name</span> <span class="op">=</span> <span class="ident">setLogger</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_logger</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Parser</span>, <span class="ident">logger</span>: <span class="kw-2">&amp;</span><span class="ident">parser</span>::<span class="ident">Logger</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_logger</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Parser</span>, <span class="ident">logger</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">parser</span>::<span class="ident">Logger</span><span class="op">&gt;</span>);
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "web_tree_sitter_sys";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
