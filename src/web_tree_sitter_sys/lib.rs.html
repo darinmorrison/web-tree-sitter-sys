@@ -697,6 +697,12 @@
 <span id="694">694</span>
 <span id="695">695</span>
 <span id="696">696</span>
+<span id="697">697</span>
+<span id="698">698</span>
+<span id="699">699</span>
+<span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// FIXME: Double check we construct object properties in order.</span>
 
@@ -1369,6 +1375,9 @@
     <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">js_name</span> <span class="op">=</span> <span class="ident">getLogger</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_logger</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Parser</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">parser</span>::<span class="ident">Logger</span><span class="op">&gt;</span>;
 
+    <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">js_name</span> <span class="op">=</span> <span class="ident">getTimeoutMicros</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_timeout_micros</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Parser</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f64</span>;
+
     <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">js_name</span> <span class="op">=</span> <span class="ident">parse</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_with_function</span>(
         <span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Parser</span>,
@@ -1393,6 +1402,9 @@
 
     <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">js_name</span> <span class="op">=</span> <span class="ident">setLogger</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_logger</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Parser</span>, <span class="ident">logger</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">parser</span>::<span class="ident">Logger</span><span class="op">&gt;</span>);
+
+    <span class="attribute">#[<span class="ident">wasm_bindgen</span>(<span class="ident">method</span>, <span class="ident">js_name</span> <span class="op">=</span> <span class="ident">setTimeoutMicros</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_timeout_micros</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="ident">Parser</span>, <span class="ident">timeout_micros</span>: <span class="ident">f64</span>);
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="web_tree_sitter_sys"></div>
