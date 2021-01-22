@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["web_tree_sitter_sys"] = [{"text":"impl Eq for Edit","synthetic":false,"types":[]},{"text":"impl Eq for LoggerParams","synthetic":false,"types":[]},{"text":"impl Eq for ParseOptions","synthetic":false,"types":[]},{"text":"impl Eq for Point","synthetic":false,"types":[]},{"text":"impl Eq for PredicateOperand","synthetic":false,"types":[]},{"text":"impl Eq for PredicateResult","synthetic":false,"types":[]},{"text":"impl Eq for QueryCapture","synthetic":false,"types":[]},{"text":"impl Eq for QueryMatch","synthetic":false,"types":[]},{"text":"impl Eq for Range","synthetic":false,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
